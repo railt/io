@@ -14,5 +14,4 @@ namespace Railt\Io\Exception;
  */
 class NotReadableException extends \LogicException
 {
-
 }
