@@ -1,7 +1,7 @@
 {
     "name": "railt/io",
     "type": "library",
-    "description": "The Railt Input/Output and Filesystem utils.",
+    "description": "The Railt filesystem utils",
     "license": "MIT",
     "keywords": ["file", "filesystem", "fso", "input", "output", "utils"],
     "homepage": "http://railt.org",
@@ -20,7 +20,15 @@
     },
     "autoload": {
         "psr-4": {
-            "Railt\\Io\\": "."
+            "Railt\\Io\\": "src"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~6.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Railt\\Tests\\Io\\": "tests"
         }
     },
     "config": {

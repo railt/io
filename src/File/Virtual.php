@@ -7,13 +7,33 @@
  */
 declare(strict_types=1);
 
-namespace Railt\Io;
+namespace Railt\Io\File;
 
 /**
- * Class VirtualFile
+ * Class Virtual
  */
-class VirtualFile extends File
+class Virtual extends BaseFile
 {
+    /**
+     * @var string A default file name which created from sources
+     */
+    private const FILE_NAME = 'php://input';
+
+    /**
+     * @var string|null
+     */
+    private $hash;
+
+    /**
+     * Virtual constructor.
+     * @param string $contents
+     * @param string|null $name
+     */
+    public function __construct(string $contents, string $name = null)
+    {
+        parent::__construct($contents, $name ?? self::FILE_NAME);
+    }
+
     /**
      * @return string
      */
