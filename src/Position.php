@@ -12,7 +12,7 @@ namespace Railt\Io;
 /**
  * Class Position
  */
-final class Position
+final class Position implements PositionInterface
 {
     /**
      * @var int
@@ -56,11 +56,11 @@ final class Position
             $current += \strlen($text) + 1;
 
             if ($current > $bytesOffset) {
-                return [$line + 1, $bytesOffset - $previous, $bytesOffset];
+                return [$line + 1, $bytesOffset - $previous + 1, $bytesOffset];
             }
         }
 
-        return [$line, 0, $current - 1];
+        return [$line, 1, $current - 1];
     }
 
     /**

@@ -1,6 +1,3 @@
-.idea/
+tests/.locked
 vendor/
-.DS_Store
-Thumbs.db
-composer.phar
 composer.lock

@@ -10,7 +10,10 @@ declare(strict_types=1);
 namespace Railt\Io\File;
 
 use Railt\Io\Declaration;
+use Railt\Io\DeclarationInterface;
+use Railt\Io\File;
 use Railt\Io\Position;
+use Railt\Io\PositionInterface;
 use Railt\Io\Readable;
 
 /**
@@ -40,16 +43,16 @@ abstract class BaseFile implements Readable
      */
     public function __construct(string $contents, string $name)
     {
-        $this->declaration = Declaration::make(Readable::class);
+        $this->declaration = Declaration::make(File::class, Readable::class);
         $this->contents    = $contents;
         $this->name        = $name;
     }
 
     /**
      * @param int $bytesOffset
-     * @return Position
+     * @return Position|PositionInterface
      */
-    public function getPosition(int $bytesOffset): Position
+    public function getPosition(int $bytesOffset): PositionInterface
     {
         return new Position($this->getContents(), $bytesOffset);
     }
@@ -63,9 +66,9 @@ abstract class BaseFile implements Readable
     }
 
     /**
-     * @return Declaration
+     * @return DeclarationInterface|Declaration
      */
-    public function getDeclaration(): Declaration
+    public function getDeclarationInfo(): DeclarationInterface
     {
         return $this->declaration;
     }
@@ -91,26 +94,18 @@ abstract class BaseFile implements Readable
     }
 
     /**
-     * @return array
-     */
-    public function __debugInfo(): array
-    {
-        $result = ['hash' => $this->getHash()];
-
-        if (! $this->isFile()) {
-            $result['content'] = $this->getContents();
-        } else {
-            $result['path'] = $this->getPathname();
-        }
-
-        return $result;
-    }
-
-    /**
      * @return string
      */
     public function getPathname(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getContents();
     }
 }

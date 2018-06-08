@@ -22,8 +22,7 @@ interface Readable
     public function getPathname(): string;
 
     /**
-     * Returns the hash of the file. Required for
-     * disability cache.
+     * Returns the hash of the file.
      *
      * @return string
      */
@@ -38,14 +37,14 @@ interface Readable
 
     /**
      * @param int $bytesOffset
-     * @return Position
+     * @return PositionInterface
      */
-    public function getPosition(int $bytesOffset): Position;
+    public function getPosition(int $bytesOffset): PositionInterface;
 
     /**
-     * @return Declaration
+     * @return DeclarationInterface
      */
-    public function getDeclaration(): Declaration;
+    public function getDeclarationInfo(): DeclarationInterface;
 
     /**
      * @return bool
