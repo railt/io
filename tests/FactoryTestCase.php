@@ -77,8 +77,8 @@ class FactoryTestCase extends TestCase
     {
         $readable = $factory();
 
-        $this->assertEquals(40, \strlen($readable->getHash()));
-        $this->assertEquals(40, \mb_strlen($readable->getHash()));
+        $this->assertSame(40, \strlen($readable->getHash()));
+        $this->assertSame(40, \mb_strlen($readable->getHash()));
     }
 
     /**
@@ -89,9 +89,9 @@ class FactoryTestCase extends TestCase
     {
         $readable = $factory();
 
-        $this->assertEquals($readable->getHash(), $factory()->getHash());
-        $this->assertEquals($readable->getHash(), (clone $readable)->getHash());
-        $this->assertEquals($readable->getHash(), \unserialize(\serialize($readable))->getHash());
+        $this->assertSame($readable->getHash(), $factory()->getHash());
+        $this->assertSame($readable->getHash(), (clone $readable)->getHash());
+        $this->assertSame($readable->getHash(), \unserialize(\serialize($readable))->getHash());
     }
 
     /**
@@ -104,9 +104,9 @@ class FactoryTestCase extends TestCase
 
         $requiredPathname = $readable->isFile() ? __FILE__ : 'php://input';
 
-        $this->assertEquals($requiredPathname, $readable->getPathname());
-        $this->assertEquals($requiredPathname, (clone $readable)->getPathname());
-        $this->assertEquals($requiredPathname, \unserialize(\serialize($readable))->getPathname());
+        $this->assertSame($requiredPathname, $readable->getPathname());
+        $this->assertSame($requiredPathname, (clone $readable)->getPathname());
+        $this->assertSame($requiredPathname, \unserialize(\serialize($readable))->getPathname());
     }
 
     /**
@@ -137,7 +137,7 @@ class FactoryTestCase extends TestCase
 
         File::fromPathname($file);
 
-        //
+
         @\chmod($file, 0777);
         @\unlink($file);
     }
@@ -154,7 +154,7 @@ class FactoryTestCase extends TestCase
         /** @var DeclarationInterface $declaration */
         $declaration = $readable->getDeclarationInfo();
 
-        $this->assertEquals(__CLASS__, $declaration->getClass());
+        $this->assertSame(__CLASS__, $declaration->getClass());
     }
 
     /**
@@ -169,7 +169,7 @@ class FactoryTestCase extends TestCase
         /** @var DeclarationInterface $declaration */
         $declaration = $readable->getDeclarationInfo();
 
-        $this->assertEquals(__FILE__, $declaration->getPathname());
+        $this->assertSame(__FILE__, $declaration->getPathname());
     }
 
     /**
@@ -210,11 +210,11 @@ class FactoryTestCase extends TestCase
             /** @var PositionInterface $position */
             $position = $readable->getPosition($offset);
 
-            $this->assertEquals(\substr_count($chunk, "\n") + 1, $position->getLine());
+            $this->assertSame(\substr_count($chunk, "\n") + 1, $position->getLine());
             $this->assertGreaterThan(0, $position->getColumn());
 
             if (\method_exists($position, 'getOffset')) {
-                $this->assertEquals($offset, $position->getOffset());
+                $this->assertSame($offset, $position->getOffset());
             }
         }
     }
@@ -225,7 +225,7 @@ class FactoryTestCase extends TestCase
      */
     public function testRenderable(\Closure $factory): void
     {
-        $this->assertEquals($this->read(), (string)$factory());
-        $this->assertEquals($this->read(), (string)$factory()->getContents());
+        $this->assertSame($this->read(), (string)$factory());
+        $this->assertSame($this->read(), (string)$factory()->getContents());
     }
 }
