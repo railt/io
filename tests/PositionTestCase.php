@@ -66,10 +66,10 @@ class PositionTestCase extends TestCase
         $position = $readable->getPosition(\PHP_INT_MAX);
 
         // Max line of the file
-        $this->assertEquals(\substr_count($this->getSources(), "\n"), $position->getLine());
+        $this->assertSame(\substr_count($this->getSources(), "\n"), $position->getLine());
 
         // Max offset of the file
-        $this->assertEquals(1, $position->getColumn());
+        $this->assertSame(1, $position->getColumn());
     }
 
     /**
@@ -84,7 +84,7 @@ class PositionTestCase extends TestCase
 
         $position = $readable->getPosition(\PHP_INT_MIN);
 
-        $this->assertEquals(1, $position->getLine());
-        $this->assertEquals(1, $position->getColumn());
+        $this->assertSame(1, $position->getLine());
+        $this->assertSame(1, $position->getColumn());
     }
 }

@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Railt\Io\Exception;
 
-use Railt\Io\PositionInterface;
 use Railt\Io\Readable;
 
 /**
@@ -33,7 +32,7 @@ class ExternalFileException extends \LogicException implements ExternalException
         $this->file = $file->getPathname();
 
         if ($column === null) {
-            $position = $file->getPosition($offsetOrLine);
+            $position                = $file->getPosition($offsetOrLine);
             [$offsetOrLine, $column] = [$position->getLine(), $position->getColumn()];
         }
 

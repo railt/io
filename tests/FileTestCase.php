@@ -9,12 +9,7 @@ declare(strict_types=1);
 
 namespace Railt\Tests\Io;
 
-use Railt\Io\DeclarationInterface;
-use Railt\Io\Exception\NotFoundException;
-use Railt\Io\Exception\NotReadableException;
 use Railt\Io\File;
-use Railt\Io\PositionInterface;
-use Railt\Io\Readable;
 
 /**
  * Class FactoryTestCase
