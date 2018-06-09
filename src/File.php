@@ -74,16 +74,10 @@ class File
         self::isReadable($path);
 
         $level    = \error_reporting(0);
-        $contents = \file_get_contents($path);
-
+        $contents = @\file_get_contents($path);
         \error_reporting($level);
 
-        if ($contents === false) {
-            $error = 'An unexpected error while reading the file "%s": %s';
-            throw new NotReadableException(\sprintf($error, \realpath($path), \error_get_last()['message']));
-        }
-
-        return $contents;
+        return (string)$contents;
     }
 
     /**
@@ -93,7 +87,9 @@ class File
      */
     public static function fromSources(string $sources, string $name = null): Readable
     {
-        return new Virtual($sources, $name);
+        return $name && \is_file($name)
+            ? new Physical($sources, $name)
+            : new Virtual($sources, $name);
     }
 
     /**

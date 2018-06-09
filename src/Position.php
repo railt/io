@@ -48,6 +48,7 @@ final class Position implements PositionInterface
      */
     private function getInformation(string $sources, int $bytesOffset): array
     {
+        $bytesOffset = \max(0, $bytesOffset);
         $line     = 0;
         $current  = 0;
 

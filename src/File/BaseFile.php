@@ -11,6 +11,8 @@ namespace Railt\Io\File;
 
 use Railt\Io\Declaration;
 use Railt\Io\DeclarationInterface;
+use Railt\Io\Exception\ExternalExceptionInterface;
+use Railt\Io\Exception\ExternalFileException;
 use Railt\Io\File;
 use Railt\Io\Position;
 use Railt\Io\PositionInterface;
@@ -46,6 +48,20 @@ abstract class BaseFile implements Readable
         $this->declaration = Declaration::make(File::class, Readable::class);
         $this->contents    = $contents;
         $this->name        = $name;
+    }
+
+    /**
+     * @param string $message
+     * @param int $offsetOrLine
+     * @param int|null $column
+     * @return ExternalExceptionInterface
+     */
+    public function error(string $message, int $offsetOrLine = 0, int $column = null): ExternalExceptionInterface
+    {
+        $error = new ExternalFileException($message);
+        $error->throwsIn($this, $offsetOrLine, $column);
+
+        return $error;
     }
 
     /**

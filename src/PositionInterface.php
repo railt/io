@@ -15,12 +15,16 @@ namespace Railt\Io;
 interface PositionInterface
 {
     /**
+     * NOTE: Do not use the returned typehint for compatibility with exceptions.
+     *
      * @return int
      */
-    public function getLine(): int;
+    public function getLine();
 
     /**
+     * NOTE: Do not use the returned typehint for compatibility with exceptions.
+     *
      * @return int
      */
-    public function getColumn(): int;
+    public function getColumn();
 }
