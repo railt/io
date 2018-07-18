@@ -24,6 +24,16 @@ class ExternalFileException extends \LogicException implements ExternalException
 
     /**
      * @param Readable $file
+     * @param PositionInterface $position
+     * @return ExternalExceptionInterface
+     */
+    public function throwsAt(Readable $file, PositionInterface $position): ExternalExceptionInterface
+    {
+        return $this->throwsIn($file, $position->getLine(), $position->getColumn());
+    }
+
+    /**
+     * @param Readable $file
      * @param int $offsetOrLine
      * @param int|null $column
      * @return ExternalFileException
@@ -45,7 +55,7 @@ class ExternalFileException extends \LogicException implements ExternalException
     /**
      * @return int
      */
-    final public function getColumn()
+    final public function getColumn(): int
     {
         return $this->column;
     }

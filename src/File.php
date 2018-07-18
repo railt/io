@@ -17,7 +17,7 @@ use Railt\Io\File\Virtual;
 /**
  * File factory.
  */
-class File
+abstract class File
 {
     /**
      * @param \SplFileInfo $info
