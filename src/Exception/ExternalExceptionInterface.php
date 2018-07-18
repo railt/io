@@ -23,5 +23,5 @@ interface ExternalExceptionInterface extends PositionInterface
      * @param int|null $column
      * @return ExternalExceptionInterface
      */
-    public function throwsIn(Readable $file, int $offsetOrLine = 0, int $column = null): ExternalExceptionInterface;
+    public function throwsIn(Readable $file, int $offsetOrLine = 0, int $column = null): self;
 }

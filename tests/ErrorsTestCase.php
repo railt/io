@@ -69,8 +69,8 @@ class ErrorsTestCase extends TestCase
         try {
             throw $readable->error($message, 23, 42);
         } catch (ExternalExceptionInterface $e) {
-            $this->assertEquals(23, $e->getLine());
-            $this->assertEquals(42, $e->getColumn());
+            $this->assertSame(23, $e->getLine());
+            $this->assertSame(42, $e->getColumn());
 
             throw $e;
         }
@@ -93,8 +93,8 @@ class ErrorsTestCase extends TestCase
         try {
             throw $readable->error($message, 666);
         } catch (ExternalExceptionInterface $e) {
-            $this->assertEquals(30, $e->getLine());
-            $this->assertEquals(49, $e->getColumn());
+            $this->assertSame(30, $e->getLine());
+            $this->assertSame(49, $e->getColumn());
 
             throw $e;
         }
