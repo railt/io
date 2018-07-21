@@ -58,8 +58,7 @@ class FileTestCase extends TestCase
      */
     public function testRenderable(\Closure $factory): void
     {
-        $this->assertSame($this->getSources(), (string)$factory());
-        $this->assertSame($this->getSources(), (string)$factory()->getContents());
+        $this->assertSame((string)$factory(), (string)$factory()->getPathname());
     }
 
     /**
