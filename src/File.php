@@ -36,7 +36,7 @@ abstract class File
      */
     public static function fromPathname(string $path): Readable
     {
-        return new Physical(self::tryRead($path), $path);
+        return new Physical(self::tryRead($path), \realpath($path));
     }
 
     /**
