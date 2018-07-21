@@ -45,9 +45,9 @@ abstract class BaseFile implements Readable
      */
     public function __construct(string $contents, string $name)
     {
-        $this->declaration = Declaration::make(File::class, Readable::class);
-        $this->contents    = $contents;
         $this->name        = $name;
+        $this->contents    = $contents;
+        $this->declaration = Declaration::make(File::class, Readable::class);
     }
 
     /**
@@ -122,6 +122,6 @@ abstract class BaseFile implements Readable
      */
     public function __toString(): string
     {
-        return $this->getContents();
+        return $this->getPathname();
     }
 }
