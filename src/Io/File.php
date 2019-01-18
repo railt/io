@@ -41,15 +41,6 @@ abstract class File
 
     /**
      * @param string $path
-     * @return bool
-     */
-    private static function isPhysicallyFile(string $path): bool
-    {
-        return \is_file($path) && \is_readable($path);
-    }
-
-    /**
-     * @param string $path
      * @throws NotFoundException
      */
     private static function isFile(string $path): void
@@ -82,7 +73,7 @@ abstract class File
         self::isFile($path);
         self::isReadable($path);
 
-        $level    = \error_reporting(0);
+        $level = \error_reporting(0);
         $contents = @\file_get_contents($path);
         \error_reporting($level);
 
@@ -90,39 +81,15 @@ abstract class File
     }
 
     /**
-     * @param string $fileOrSources
-     * @param string|null $name
-     * @return Readable
-     * @throws NotReadableException
-     */
-    public static function new(string $fileOrSources, string $name = null): Readable
-    {
-        if (self::isPhysicallyFile($fileOrSources)) {
-            return static::fromPathname($fileOrSources);
-        }
-
-        return static::fromSources($fileOrSources, $name);
-    }
-
-    /**
      * @param string $sources
      * @param string|null $name
      * @return Virtual|Readable
      */
-    public static function fromSources(string $sources = '', string $name = null): Readable
+    public static function fromSources(string $sources, string $name = null): Readable
     {
         return $name && \is_file($name)
             ? new Physical($sources, $name)
             : new Virtual($sources, $name);
-    }
-
-    /**
-     * @param string|null $name
-     * @return Readable
-     */
-    public static function empty(string $name = null): Readable
-    {
-        return static::fromSources('', $name);
     }
 
     /**

@@ -36,7 +36,7 @@ abstract class BaseFile implements Readable
     /**
      * @var Declaration
      */
-    protected $declaration;
+    private $declaration;
 
     /**
      * File constructor.
@@ -45,9 +45,9 @@ abstract class BaseFile implements Readable
      */
     public function __construct(string $contents, string $name)
     {
-        $this->name        = $name;
-        $this->contents    = $contents;
-        $this->declaration = Declaration::make(static::class, File::class, Readable::class);
+        $this->name = $name;
+        $this->contents = $contents;
+        $this->declaration = Declaration::make(File::class, Readable::class);
     }
 
     /**
@@ -84,7 +84,7 @@ abstract class BaseFile implements Readable
     /**
      * @return DeclarationInterface|Declaration
      */
-    public function getDeclaration(): DeclarationInterface
+    public function getDeclarationInfo(): DeclarationInterface
     {
         return $this->declaration;
     }
@@ -94,7 +94,7 @@ abstract class BaseFile implements Readable
      */
     public function __wakeup(): void
     {
-        $this->declaration = Declaration::make(File::class, static::class);
+        $this->declaration = Declaration::make(static::class);
     }
 
     /**
@@ -112,29 +112,16 @@ abstract class BaseFile implements Readable
     /**
      * @return string
      */
-    public function __toString(): string
-    {
-        return $this->getPathname();
-    }
-
-    /**
-     * @return string
-     */
     public function getPathname(): string
     {
         return $this->name;
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function __debugInfo(): array
+    public function __toString(): string
     {
-        $contents = \substr($this->getContents(), 0, 80);
-
-        return [
-            'path'     => $this->getPathname(),
-            'contents' => \str_replace("\n", '\n', $contents . '...'),
-        ];
+        return $this->getPathname();
     }
 }

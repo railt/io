@@ -22,8 +22,6 @@ class ErrorsTestCase extends TestCase
 {
     /**
      * @return void
-     * @throws NotReadableException
-     * @throws \PHPUnit\Framework\Exception
      */
     public function testNotFound(): void
     {
@@ -37,9 +35,6 @@ class ErrorsTestCase extends TestCase
 
     /**
      * @return void
-     * @throws NotReadableException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \PHPUnit\Framework\SkippedTestError
      */
     public function testNotReadable(): void
     {
@@ -47,7 +42,7 @@ class ErrorsTestCase extends TestCase
             $this->markTestSkipped('Windows OS does not support the chmod options');
         }
 
-        $file = __DIR__ . '/resources/locked';
+        $file = __DIR__ . '/.locked';
 
         $this->expectException(NotReadableException::class);
         $this->expectExceptionMessage('Can not read the file "' . $file . '": Permission denied');
@@ -100,10 +95,10 @@ class ErrorsTestCase extends TestCase
         $readable = $factory();
 
         try {
-            throw $readable->error($message, 150);
+            throw $readable->error($message, 666);
         } catch (ExternalExceptionInterface $e) {
-            $this->assertSame(2, $e->getLine());
-            $this->assertSame(39, $e->getColumn());
+            $this->assertSame(30, $e->getLine());
+            $this->assertSame(49, $e->getColumn());
 
             throw $e;
         }
@@ -114,6 +109,6 @@ class ErrorsTestCase extends TestCase
      */
     protected function getPathname(): string
     {
-        return __DIR__ . '/resources/example.txt';
+        return __FILE__;
     }
 }

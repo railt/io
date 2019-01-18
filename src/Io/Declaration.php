@@ -37,8 +37,8 @@ final class Declaration implements DeclarationInterface
      */
     public function __construct(string $file, int $line, ?string $class)
     {
-        $this->file  = $file;
-        $this->line  = $line;
+        $this->file = $file;
+        $this->line = $line;
         $this->class = $class;
     }
 
@@ -48,53 +48,22 @@ final class Declaration implements DeclarationInterface
      */
     public static function make(string ...$needles): self
     {
+        [$file, $line, $class] = ['undefined', 0, null];
+
         $trace = \array_reverse(\debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
 
-        return new static(...self::reduce($needles, $trace));
-    }
+        foreach ($trace as $i => $current) {
+            $class = $current['class'] ?? \stdClass::class;
 
-    /**
-     * @param array $needles
-     * @param array $trace
-     * @return array
-     */
-    private static function reduce(array $needles, array $trace): array
-    {
-        [$file, $line, $class] = ['php://input', 0, null];
-
-        foreach ($trace as $i => $item) {
-            if (! isset($item['class'])) {
-                continue;
-            }
-
-            if (self::match($item['class'], ...$needles)) {
-                $previous = \max(0, $i - 1);
-
-                return [
-                    $item['file'] ?? $file,
-                    $item['line'] ?? $line,
-                    $trace[$previous]['class'] ?? $class,
-                ];
+            foreach ($needles as $needle) {
+                if ($class === $needle || \is_subclass_of($class, $needle)) {
+                    [$file, $line, $class] = [$current['file'], (int)$current['line'], $trace[$i - 1]['class'] ?? null];
+                    break 2;
+                }
             }
         }
 
-        return [$file, $line, $class];
-    }
-
-    /**
-     * @param string $class
-     * @param string ...$needles
-     * @return bool
-     */
-    private static function match(string $class, string ...$needles): bool
-    {
-        foreach ($needles as $needle) {
-            if (\is_a($needle, $class, true)) {
-                return true;
-            }
-        }
-
-        return false;
+        return new static($file, $line, $class);
     }
 
     /**
