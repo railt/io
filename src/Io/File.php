@@ -15,36 +15,14 @@ use Railt\Io\File\Physical;
 use Railt\Io\File\Virtual;
 
 /**
- * Class File
+ * File factory.
  */
-abstract class File implements Readable
+abstract class File
 {
     /**
-     * @var string
-     */
-    protected $contents;
-
-    /**
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * File constructor.
-     *
-     * @param string $contents
-     * @param string $name
-     */
-    public function __construct(string $contents, string $name)
-    {
-        $this->name     = $name;
-        $this->contents = $contents;
-    }
-
-    /**
      * @param \SplFileInfo $info
-     * @return Readable|$this
-     * @throws NotReadableException
+     * @return File|Readable
+     * @throws \Railt\Io\Exception\NotReadableException
      */
     public static function fromSplFileInfo(\SplFileInfo $info): Readable
     {
@@ -53,8 +31,8 @@ abstract class File implements Readable
 
     /**
      * @param string $path
-     * @return Readable|$this
-     * @throws NotReadableException
+     * @return File|Readable
+     * @throws \Railt\Io\Exception\NotReadableException
      */
     public static function fromPathname(string $path): Readable
     {
@@ -63,31 +41,9 @@ abstract class File implements Readable
 
     /**
      * @param string $path
-     * @return string
-     * @throws NotFoundException
-     * @throws NotReadableException
-     */
-    private static function tryRead(string $path): string
-    {
-        self::assertExisting($path);
-        self::assertReadable($path);
-
-        $level    = \error_reporting(0);
-        $contents = @\file_get_contents($path);
-        \error_reporting($level);
-
-        if ($contents === false) {
-            throw new NotReadableException(\error_get_last()['message']);
-        }
-
-        return (string)$contents;
-    }
-
-    /**
-     * @param string $path
      * @throws NotFoundException
      */
-    private static function assertExisting(string $path): void
+    private static function isFile(string $path): void
     {
         if (! \is_file($path)) {
             $error = 'File "%s" not found';
@@ -99,7 +55,7 @@ abstract class File implements Readable
      * @param string $path
      * @throws NotReadableException
      */
-    private static function assertReadable(string $path): void
+    private static function isReadable(string $path): void
     {
         if (! \is_readable($path)) {
             $error = 'Can not read the file "%s": Permission denied';
@@ -108,112 +64,40 @@ abstract class File implements Readable
     }
 
     /**
-     * @param string $fileOrSources
-     * @param string|null $name
-     * @return Readable|$this
+     * @param string $path
+     * @return string
      * @throws NotReadableException
      */
-    public static function new(string $fileOrSources, string $name = null): Readable
+    private static function tryRead(string $path): string
     {
-        if (self::isPhysicallyFile($fileOrSources)) {
-            return static::fromPathname($fileOrSources);
-        }
+        self::isFile($path);
+        self::isReadable($path);
 
-        return static::fromSources($fileOrSources, $name);
-    }
+        $level = \error_reporting(0);
+        $contents = @\file_get_contents($path);
+        \error_reporting($level);
 
-    /**
-     * @param string $path
-     * @return bool
-     */
-    private static function isPhysicallyFile(string $path): bool
-    {
-        return \is_file($path) && \is_readable($path);
+        return (string)$contents;
     }
 
     /**
      * @param string $sources
      * @param string|null $name
-     * @return Readable|$this
+     * @return Virtual|Readable
      */
-    public static function fromSources(string $sources = '', string $name = null): Readable
+    public static function fromSources(string $sources, string $name = null): Readable
     {
-        return $name && \is_file($name) ? new Physical($sources, $name) : new Virtual($sources, $name);
-    }
-
-    /**
-     * @param string|null $name
-     * @return Readable|$this
-     */
-    public static function empty(string $name = null): Readable
-    {
-        return static::fromSources('', $name);
+        return $name && \is_file($name)
+            ? new Physical($sources, $name)
+            : new Virtual($sources, $name);
     }
 
     /**
      * @param Readable $readable
-     * @return Readable|$this
+     * @return Readable
      */
     public static function fromReadable(Readable $readable): Readable
     {
         return clone $readable;
-    }
-
-    /**
-     * @param int $bytesOffset
-     * @return PositionInterface
-     */
-    public function getPosition(int $bytesOffset): PositionInterface
-    {
-        return new Position($this->getContents(), $bytesOffset);
-    }
-
-    /**
-     * @return string
-     */
-    public function getContents(): string
-    {
-        return $this->contents;
-    }
-
-    /**
-     * @return array
-     */
-    public function __sleep(): array
-    {
-        return [
-            'contents',
-            'name',
-            'hash',
-        ];
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->getPathname();
-    }
-
-    /**
-     * @return string
-     */
-    public function getPathname(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return array
-     */
-    public function __debugInfo(): array
-    {
-        $contents = \substr($this->getContents(), 0, 80);
-
-        return [
-            'path'     => $this->getPathname(),
-            'contents' => \str_replace("\n", '\n', $contents . '...'),
-        ];
     }
 }

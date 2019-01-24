@@ -9,12 +9,10 @@ declare(strict_types=1);
 
 namespace Railt\Io\File;
 
-use Railt\Io\File;
-
 /**
  * Class Physical
  */
-class Physical extends File
+class Physical extends BaseFile
 {
     /**
      * @var string|null
