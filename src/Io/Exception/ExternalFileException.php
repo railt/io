@@ -43,7 +43,7 @@ class ExternalFileException extends \LogicException implements ExternalException
         $this->file = $file->getPathname();
 
         if ($column === null) {
-            $position = $file->getPosition($offsetOrLine);
+            $position                = $file->getPosition($offsetOrLine);
             [$offsetOrLine, $column] = [$position->getLine(), $position->getColumn()];
         }
 
@@ -58,8 +58,8 @@ class ExternalFileException extends \LogicException implements ExternalException
      */
     public function from(self $exception): self
     {
-        $this->file = $exception->getFile();
-        $this->line = $exception->getLine();
+        $this->file   = $exception->getFile();
+        $this->line   = $exception->getLine();
         $this->column = $exception->getColumn();
 
         return $this;
