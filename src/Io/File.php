@@ -37,7 +37,7 @@ abstract class File implements Readable
      */
     public function __construct(string $contents, string $name)
     {
-        $this->name = $name;
+        $this->name     = $name;
         $this->contents = $contents;
     }
 
@@ -72,7 +72,7 @@ abstract class File implements Readable
         self::assertExisting($path);
         self::assertReadable($path);
 
-        $level = \error_reporting(0);
+        $level    = \error_reporting(0);
         $contents = @\file_get_contents($path);
         \error_reporting($level);
 
