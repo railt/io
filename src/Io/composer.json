@@ -24,20 +24,16 @@
     },
     "require": {
         "php": ">=7.1.3",
-        "ext-spl": "*"
+        "ext-spl": "*",
+        "railt/position": "1.4.*|1.4.x-dev"
     },
     "autoload": {
         "psr-4": {
-            "Railt\\Component\\": "src/"
+            "Railt\\Io\\": ""
         }
     },
     "require-dev": {
         "phpunit/phpunit": "^7.5"
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Railt\\Tests\\Io\\": "tests/"
-        }
     },
     "extra": {
         "branch-alias": {

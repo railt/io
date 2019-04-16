@@ -7,7 +7,7 @@
  */
 declare(strict_types=1);
 
-namespace Railt\Tests\Io;
+namespace Railt\Component\Io\Tests;
 
 /**
  * Class FileHashTestCase

@@ -7,7 +7,7 @@
  */
 declare(strict_types=1);
 
-namespace Railt\Io\Exception;
+namespace Railt\Component\Io\Exception;
 
 /**
  * Class NotFoundException

@@ -7,11 +7,11 @@
  */
 declare(strict_types=1);
 
-namespace Railt\Io\Exception;
+namespace Railt\Component\Io\Exception;
 
 /**
  * Class NotAccessibleException
  */
-class NotAccessibleException extends \RuntimeException
+class NotAccessibleException extends FileException
 {
 }

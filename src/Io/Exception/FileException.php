@@ -10,8 +10,9 @@ declare(strict_types=1);
 namespace Railt\Component\Io\Exception;
 
 /**
- * Class NotReadableException
+ * Class FileException
  */
-class NotReadableException extends NotAccessibleException
+class FileException extends \RuntimeException
 {
+
 }
